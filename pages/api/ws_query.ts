@@ -8,7 +8,7 @@ import { version } from 'node:process';
 const nodeVersion = `node-${version.substring(1)}`;
 const exitnode = `vercel-${nodeVersion}`;
 
-const driverName = "@neondatabase/serverless@0.9.4_leaky";
+const driverName = "@neondatabase/serverless@0.9.4";
 
 const awaitTimeout = (delay: number) => new Promise(resolve => setTimeout(resolve, delay));
 
