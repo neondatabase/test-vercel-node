@@ -26,14 +26,11 @@ export default async function handler(
         let hasFailedQuery = false;
 
         let pool;
-        let client;
         const poolConnectStartedAt = new Date();
         try {
             pool = new Pool({
                 connectionString: slRequest.connstr,
             });
-            // leak the connection
-            client = await pool.connect();
         } catch (e: any) {
             console.log('new pool caught exception: ' + e.stack);
             const common: CommonQuery = {
@@ -68,7 +65,7 @@ export default async function handler(
 
             try {
                 console.log('running query ' + slQuery.query + ' with connstr ' + slRequest.connstr);
-                const rawResult = await Promise.race([client!.query(slQuery.query, params), globalTimeout]);
+                const rawResult = await Promise.race([pool!.query(slQuery.query, params), globalTimeout]);
                 if (!rawResult) {
                     throw new Error("global timeout exceeded, function was invoked at " + funcBootedAt.toISOString());
                 }
